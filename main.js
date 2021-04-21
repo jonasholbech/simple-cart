@@ -1,18 +1,17 @@
 import "./style.css";
 import { products } from "./products.js";
-let myProducts = products.map((p) => {
-  p.amount = 0;
-  return p;
-});
+
+let basket = [];
 
 function render() {
-  showProducts(myProducts);
-  showBasket(myProducts);
+  showProducts(products);
+  showBasket(basket);
 }
 render();
-function showProducts(products2) {
+
+function showProducts(products) {
   document.querySelector("#productlist").innerHTML = "";
-  products2.forEach(showProduct);
+  products.forEach(showProduct);
 }
 
 function showProduct(product) {
@@ -20,10 +19,7 @@ function showProduct(product) {
   const copy = template.cloneNode(true);
   copy.querySelector("h1").textContent = product.name;
   copy.querySelector("h2").textContent = product.price;
-  copy.querySelector("input").value = product.amount;
-  copy.querySelector("input").addEventListener("blur", (e) => {
-    setAmount(product.id, e.target.valueAsNumber);
-  });
+
   copy.querySelector(".minus").addEventListener("click", () => {
     subtractOne(product.id);
   });
@@ -33,36 +29,29 @@ function showProduct(product) {
   document.querySelector("#productlist").appendChild(copy);
 }
 
-function setAmount(id, amount) {
-  if (amount < 0) {
-    amount = 0;
-  }
-  myProducts = myProducts.map((item) => {
-    if (item.id === id) {
-      item.amount = amount;
-    }
-    return item;
-  });
-  render();
-}
 function subtractOne(id) {
-  myProducts = myProducts.map((item) => {
+  const tempBasket = basket.map((item) => {
     if (item.id === id) {
-      if (item.amount > 0) {
-        item.amount--;
-      }
+      item.amount--;
     }
     return item;
   });
+  basket = tempBasket.filter((item) => item.amount > 0);
   render();
 }
 function addOne(id) {
-  myProducts = myProducts.map((item) => {
-    if (item.id === id) {
-      item.amount++;
-    }
-    return item;
-  });
+  const exists = basket.findIndex((item) => item.id === id);
+  console.log(exists);
+  if (exists === -1) {
+    basket.push({ ...products.find((item) => item.id === id), amount: 1 });
+  } else {
+    basket = basket.map((item) => {
+      if (item.id === id) {
+        item.amount++;
+      }
+      return item;
+    });
+  }
   render();
 }
 function showBasket(basket) {
