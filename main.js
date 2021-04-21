@@ -1,7 +1,7 @@
 import "./style.css";
 import { products } from "./products.js";
 
-let basket = [];
+let basket = JSON.parse(localStorage.getItem("basket")) || [];
 
 function render() {
   showProducts(products);
@@ -50,6 +50,7 @@ function subtractOne(id) {
     return item;
   });
   basket = tempBasket.filter((item) => item.amount > 0);
+  saveBasket();
   render();
 }
 function setAmount(id, amount) {
@@ -65,6 +66,7 @@ function setAmount(id, amount) {
     });
   }
   basket = basket.filter((item) => item.amount > 0);
+  saveBasket();
   render();
 }
 function addOne(id, amount = 1) {
@@ -81,7 +83,11 @@ function addOne(id, amount = 1) {
     });
   }
   basket = basket.filter((item) => item.amount > 0);
+  saveBasket();
   render();
+}
+function saveBasket() {
+  localStorage.setItem("basket", JSON.stringify(basket));
 }
 function showBasket(basket) {
   document.querySelector("#basket").innerHTML = "";
