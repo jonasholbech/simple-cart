@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <main id="app">
+      <section id="productlist"></section>
+      <section id="basket"></section>
+    </main>
+    <template id="product">
+      <article class="product">
+        <h1></h1>
+        <h2></h2>
+        <button class="minus">-</button>
+        <input type="number" name="amount" value="0" />
+        <button class="plus">+</button>
+      </article>
+    </template>
+    <template id="basketitem">
+      <article class="item">
+        <h1></h1>
+        <input type="number" name="amount" value="0" disabled />
+      </article>
+    </template>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
