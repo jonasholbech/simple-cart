@@ -31,7 +31,10 @@ function showProduct(product) {
     subtractOne(product.id);
   });
   copy.querySelector("input").addEventListener("blur", (e) => {
-    addOne(product.id, e.target.valueAsNumber);
+    setAmount(product.id, e.target.valueAsNumber);
+  });
+  copy.querySelector("input").addEventListener("change", (e) => {
+    setAmount(product.id, e.target.valueAsNumber);
   });
   copy.querySelector(".plus").addEventListener("click", () => {
     addOne(product.id);
@@ -47,6 +50,21 @@ function subtractOne(id) {
     return item;
   });
   basket = tempBasket.filter((item) => item.amount > 0);
+  render();
+}
+function setAmount(id, amount) {
+  const exists = basket.findIndex((item) => item.id === id);
+  if (exists === -1) {
+    basket.push({ ...products.find((item) => item.id === id), amount: amount });
+  } else {
+    basket = basket.map((item) => {
+      if (item.id === id) {
+        item.amount = amount;
+      }
+      return item;
+    });
+  }
+  basket = basket.filter((item) => item.amount > 0);
   render();
 }
 function addOne(id, amount = 1) {
